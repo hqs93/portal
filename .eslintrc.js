@@ -15,5 +15,7 @@ module.exports = {
     }
   },
   extends: ['plugin:vue/vue3-recommended', 'eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
-  rules: {}
+  rules: {
+    '@typescript-eslint/no-var-requires': 'off'
+  }
 }

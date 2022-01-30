@@ -7,7 +7,7 @@ const count = ref(0)
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <h1 class="hfont">{{ msg }}</h1>
 
   <p>
     Recommended IDE setup:
@@ -40,9 +40,11 @@ const count = ref(0)
 a {
   color: @success-color;
 }
-
+.hfont {
+  font-size: 30px;
+}
 label {
-  margin: 0 0.5em;
+  margin: 0 10px;
   font-weight: bold;
 }
 

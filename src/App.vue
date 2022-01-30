@@ -19,5 +19,8 @@ console.log(111, import.meta.env)
   color: #2c3e50;
   margin-top: 60px;
   background-color: @primary-color;
+  img {
+    width: 200px;
+  }
 }
 </style>

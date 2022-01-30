@@ -1,12 +1,12 @@
 // https://vitejs.dev/config/
 import { ConfigEnv, loadEnv, UserConfig } from 'vite' // 使用环境变量
+import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx' // JSX
 import { VitePWA } from 'vite-plugin-pwa' // PWA 配置
 import styleImport from 'vite-plugin-style-import' // ui组件按需加载
-import { resolve } from 'path'
 import viteCompression from 'vite-plugin-compression' // gzip压缩
-import autoprefixer from 'autoprefixer'
+// import autoprefixer from 'autoprefixer' // 浏览器前缀
 
 const CWD = process.cwd() // 当前目录
 export default ({ mode }: ConfigEnv): UserConfig => {
@@ -23,7 +23,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     },
     server: {
       host: 'localhost',
-      port: 8089, // 设置服务启动端口号
+      port: 8089, // 端口号
       open: true, // 自动打开
       cors: true, // 允许跨域
       // 代理
@@ -71,10 +71,29 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         threshold: 10240,
         algorithm: 'gzip',
         ext: '.gz'
-      }),
-      autoprefixer // postcss 追加浏览器兼容前缀
+      })
+      // autoprefixer // postcss 浏览器前缀,也可以在css中导入
     ],
     css: {
+      postcss: {
+        plugins: [
+          require('postcss-px-to-viewport')({
+            viewportWidth: 750, // (Number) 视口宽度.
+            viewportHeight: 1334, // (Number) 视口高度.
+            unitPrecision: 3, // (Number) 保留几位小数，指定`px`转换为视窗单位值的小数位数（很多时候无法整除）.
+            viewportUnit: 'vw', // (String) 视口单位.
+            selectorBlackList: ['.ignore', '.hairlines'], // (Array) 要忽略的选择器,忽略后保留px.
+            minPixelValue: 1, // (Number) 设置要替换的最小像素值.
+            mediaQuery: false // (Boolean) 允许在媒体查询中转换px.
+          }), // vw适配
+          require('autoprefixer'), // postcss 浏览器前缀
+          require('postcss-url'), // 文件、字体、图片路径处理
+          require('postcss-aspect-ratio-mini'), // 元素容器宽高比
+          require('postcss-write-svg')({ utf8: false }), // 移动端1px解决方案
+          require('postcss-cssnext'), // CSS未来的特性,兼容
+          require('postcss-viewport-units') // vw布局必要插件
+        ]
+      },
       preprocessorOptions: {
         less: {
           modifyVars: {
